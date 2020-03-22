@@ -14,12 +14,18 @@ const App = () => {
       name: newName,
       date: new Date().toISOString()
     };
-    setPersons(persons.concat(newPerson));
-    setNewName('');
+    const isFound = persons.find(
+      p => p.name.toLowerCase() === newPerson.name.toLowerCase()
+    );
+    if (isFound) {
+      window.alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons(persons.concat(newPerson));
+      setNewName('');
+    }
   };
 
   const handleInputChange = event => {
-    console.log(event.target.value);
     setNewName(event.target.value);
   };
 
