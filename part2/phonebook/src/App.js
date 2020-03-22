@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
-
-const Person = props => {
-  return (
-    <>
-      <table>
-        <tbody>
-          <tr>
-            <td>{props.person.name}</td>
-            <td>{props.person.number}</td>
-          </tr>
-        </tbody>
-      </table>
-    </>
-  );
-};
+import Filter from './components/Filter';
+import Persons from './components/Persons';
+import ContactForm from './components/ContactForm';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -26,26 +14,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchFilter, setsearchFilter] = useState('');
 
-  const addPerson = event => {
-    event.preventDefault();
-    const newPerson = {
-      name: newName,
-      number: newNumber,
-      date: new Date().toISOString()
-    };
-    const isFound = persons.find(
-      p => p.name.toLowerCase() === newPerson.name.toLowerCase()
-    );
-    if (isFound) {
-      window.alert(`${newName} is already added to phonebook`);
-    } else {
-      setPersons(persons.concat(newPerson));
-      setNewName('');
-      setNewNumber('');
-    }
-  };
-
-  const handleInputChange = event => {
+  const handleNameChange = event => {
     setNewName(event.target.value);
   };
 
@@ -57,6 +26,25 @@ const App = () => {
     setsearchFilter(event.target.value);
   };
 
+  const addPerson = event => {
+    event.preventDefault();
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+      date: new Date().toISOString()
+    };
+    const isFound = persons.find(
+      p => p.name.toLowerCase() === newPerson.name.toLowerCase().trim()
+    );
+    if (isFound) {
+      window.alert(`${newName.trim()} is already added to phonebook`);
+    } else {
+      setPersons(persons.concat(newPerson));
+      setNewName('');
+      setNewNumber('');
+    }
+  };
+
   const contactToShow = !searchFilter
     ? persons
     : persons.filter(p =>
@@ -66,24 +54,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with{' '}
-      <input value={searchFilter} onChange={handleSearchFilter} />
+      <Filter filter={searchFilter} filterHandler={handleSearchFilter} />
       <h3>Add a new</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleInputChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {contactToShow.map(person => (
-        <Person key={person.name} person={person} />
-      ))}
+      <ContactForm
+        addPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        nameChanegeHandler={handleNameChange}
+        numberChangehandler={handleNumberChange}
+      />
+      <h3>Numbers</h3>
+      <Persons toShow={contactToShow} />
     </div>
   );
 };
