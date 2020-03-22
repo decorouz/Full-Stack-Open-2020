@@ -17,10 +17,14 @@ const Person = props => {
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '4444-44444-444' }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [searchFilter, setsearchFilter] = useState('');
 
   const addPerson = event => {
     event.preventDefault();
@@ -37,6 +41,7 @@ const App = () => {
     } else {
       setPersons(persons.concat(newPerson));
       setNewName('');
+      setNewNumber('');
     }
   };
 
@@ -48,9 +53,22 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const handleSearchFilter = event => {
+    setsearchFilter(event.target.value);
+  };
+
+  const contactToShow = !searchFilter
+    ? persons
+    : persons.filter(p =>
+        p.name.toLowerCase().includes(searchFilter.toLowerCase())
+      );
+
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with{' '}
+      <input value={searchFilter} onChange={handleSearchFilter} />
+      <h3>Add a new</h3>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleInputChange} />
@@ -63,7 +81,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person => (
+      {contactToShow.map(person => (
         <Person key={person.name} person={person} />
       ))}
     </div>
