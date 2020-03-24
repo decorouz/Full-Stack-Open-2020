@@ -16,10 +16,18 @@ const App = () => {
     setSearchQuery(event.target.value);
   };
 
+  const showCountryHandler = name => {
+    setSearchQuery(name);
+  };
+
   return (
     <div>
       find countries <input value={searchQuery} onChange={handleSearchQuery} />
-      <RenderCountries countries={countries} searchQuery={searchQuery} />
+      <RenderCountries
+        countries={countries}
+        searchQuery={searchQuery}
+        showCountry={showCountryHandler}
+      />
     </div>
   );
 };

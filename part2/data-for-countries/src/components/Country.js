@@ -1,9 +1,10 @@
 import React from 'react';
 
 const Country = ({ country }) => {
-  const mapLanguages = lang => {
-    return lang.map(l => <li key={l.iso639_1}>{l.name}</li>);
-  };
+  const language = country.languages.map(lang => (
+    <li key={lang.iso639_1}>{lang.name}</li>
+  ));
+
   return (
     <div>
       <h2>{country.name}</h2>
@@ -13,7 +14,7 @@ const Country = ({ country }) => {
       </div>
 
       <h3>languages</h3>
-      <ul>{mapLanguages(country.languages)}</ul>
+      <ul>{language}</ul>
       <img style={{ width: '200px' }} src={country.flag} alt="" />
     </div>
   );
