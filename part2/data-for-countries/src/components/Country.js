@@ -13,7 +13,7 @@ const Country = ({ country }) => {
         population: {country.population}
       </div>
 
-      <h3>languages</h3>
+      <h3>Spoken languages</h3>
       <ul>{language}</ul>
       <img style={{ width: '200px' }} src={country.flag} alt="" />
     </div>

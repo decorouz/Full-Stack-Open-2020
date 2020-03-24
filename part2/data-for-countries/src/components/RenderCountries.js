@@ -1,5 +1,6 @@
 import React from 'react';
 import Country from './Country';
+import Weather from './Weather';
 
 const RenderCountries = ({ countries, searchQuery, showCountry }) => {
   const renderCountries = () => {
@@ -14,7 +15,12 @@ const RenderCountries = ({ countries, searchQuery, showCountry }) => {
     }
 
     if (countryToShow.length === 1) {
-      return <Country country={country} />;
+      return (
+        <>
+          <Country country={country} />
+          <Weather city={country.capital} />
+        </>
+      );
     }
 
     if (countryToShow.length <= 10) {
