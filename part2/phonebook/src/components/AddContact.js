@@ -9,7 +9,9 @@ const AddContact = ({
   numberChangehandler,
   setPersons,
   setNewNumber,
-  setNewName
+  setNewName,
+  setNotification,
+  setNotificationType
 }) => {
   const addPerson = event => {
     event.preventDefault();
@@ -30,16 +32,45 @@ const AddContact = ({
           `${newName} is already added to phonebook. Do you want to replace the old number with a new one?`
         )
       ) {
-        phoneBookServices.update(id, newPerson).then(returnedPerson => {
-          setPersons(
-            persons.map(person => (person.id !== id ? person : returnedPerson))
-          );
-        });
+        phoneBookServices
+          .update(id, newPerson)
+          .then(returnedPerson => {
+            setPersons(
+              persons.map(person =>
+                person.id !== id ? person : returnedPerson
+              )
+            );
+
+            setNotification(`${returnedPerson.name} number was changed`);
+            setNotificationType('successful');
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+            setNewName('');
+            setNewNumber('');
+          })
+
+          .catch(error => {
+            setNotificationType('unsuccessful');
+            setNotification(
+              `${isFound.name} has already been deleted from server`
+            );
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+          });
       }
     } else {
       phoneBookServices.create(newPerson).then(returnedContact => {
         setPersons(persons.concat(returnedContact));
       });
+
+      setNotification(`Added ${newPerson.name} successfully`);
+      setNotificationType('successful');
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+
       setNewName('');
       setNewNumber('');
     }
