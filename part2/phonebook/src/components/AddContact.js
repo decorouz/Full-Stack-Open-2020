@@ -23,7 +23,19 @@ const AddContact = ({
       p => p.name.toLowerCase() === newPerson.name.toLowerCase().trim()
     );
     if (isFound) {
-      window.alert(`${newName.trim()} is already added to phonebook`);
+      const id = isFound.id;
+
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook. Do you want to replace the old number with a new one?`
+        )
+      ) {
+        phoneBookServices.update(id, newPerson).then(returnedPerson => {
+          setPersons(
+            persons.map(person => (person.id !== id ? person : returnedPerson))
+          );
+        });
+      }
     } else {
       phoneBookServices.create(newPerson).then(returnedContact => {
         setPersons(persons.concat(returnedContact));
