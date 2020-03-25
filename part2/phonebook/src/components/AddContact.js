@@ -41,7 +41,7 @@ const AddContact = ({
               )
             );
 
-            setNotification(`${returnedPerson.name} number was changed`);
+            setNotification(`${returnedPerson.name} number has been updated`);
             setNotificationType('successful');
             setTimeout(() => {
               setNotification(null);
