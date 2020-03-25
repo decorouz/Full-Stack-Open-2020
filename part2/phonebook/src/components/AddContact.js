@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import phoneBookServices from '../services/phonebook';
 
 const AddContact = ({
   persons,
@@ -25,9 +25,12 @@ const AddContact = ({
     if (isFound) {
       window.alert(`${newName.trim()} is already added to phonebook`);
     } else {
-      axios.post('http://localhost:3001/persons', newPerson).then(response => {
-        setPersons(persons.concat(response.data));
-      });
+      phoneBookServices
+        .getAll()
+        .post('http://localhost:3001/persons', newPerson)
+        .then(returnedContact => {
+          setPersons(persons.concat(returnedContact));
+        });
       setNewName('');
       setNewNumber('');
     }
