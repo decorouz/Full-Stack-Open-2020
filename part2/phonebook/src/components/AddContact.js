@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 const AddContact = ({
   persons,
@@ -24,7 +25,9 @@ const AddContact = ({
     if (isFound) {
       window.alert(`${newName.trim()} is already added to phonebook`);
     } else {
-      setPersons(persons.concat(newPerson));
+      axios.post('http://localhost:3001/persons', newPerson).then(response => {
+        setPersons(persons.concat(response.data));
+      });
       setNewName('');
       setNewNumber('');
     }
