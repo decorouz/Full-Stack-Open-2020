@@ -28,6 +28,16 @@ const App = () => {
     setsearchFilter(event.target.value);
   };
 
+  const handleRemovePerson = ({ id, name }) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      phoneBookServices.remove(id).then(() => {
+        phoneBookServices.getAll().then(returnedPersons => {
+          setPersons(returnedPersons);
+        });
+      });
+    }
+  };
+
   const contactToShow = !searchFilter
     ? persons
     : persons.filter(p =>
@@ -50,7 +60,7 @@ const App = () => {
         numberChangehandler={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons toShow={contactToShow} />
+      <Persons toShow={contactToShow} removeHandler={handleRemovePerson} />
     </div>
   );
 };

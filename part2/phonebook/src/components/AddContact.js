@@ -25,12 +25,9 @@ const AddContact = ({
     if (isFound) {
       window.alert(`${newName.trim()} is already added to phonebook`);
     } else {
-      phoneBookServices
-        .getAll()
-        .post('http://localhost:3001/persons', newPerson)
-        .then(returnedContact => {
-          setPersons(persons.concat(returnedContact));
-        });
+      phoneBookServices.create(newPerson).then(returnedContact => {
+        setPersons(persons.concat(returnedContact));
+      });
       setNewName('');
       setNewNumber('');
     }
